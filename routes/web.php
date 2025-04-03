@@ -1,22 +1,17 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\AdminController;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/home', function () {
+        return view('homepage');
+    })->name('home');
 });
 
 Route::get('/dashboard', function () {
@@ -28,7 +23,33 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::get('/game/witcher3', function () {
+    return view('games.witcher3');
+})->name('game.witcher3');
 
+Route::get('/game/pokemonza', function () {
+    return view('games.pokemonza');
+})->name('game.pokemonza');
+
+Route::get('/game/gta6', function () {
+    return view('games.gta6');
+})->name('game.gta6');
+
+Route::get('/game/rdr2', function () {
+    return view('games.rdr2');
+})->name('game.rdr2');
+
+Route::get('/game/ac_black_flag', function () {
+    return view('games.ac_black_flag');
+})->name('game.ac_black_flag');
+
+Route::get('/game/ghost_of_tsushima', function () {
+    return view('games.ghost_of_tsushima');
+})->name('game.ghost_of_tsushima');
+
+Route::get('/game/zelda_tears_of_kingdom', function () {
+    return view('games.zelda_tears_of_kingdom');
+})->name('game.zelda_tears_of_kingdom');
 require __DIR__.'/auth.php';
 
 Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
