@@ -26,6 +26,7 @@ class UsersTableSeeder extends Seeder
                 'email'=>'admin@gmail.com',
                 'password'=>Hash::make('111'),
                 'role'=>'admin',
+                'photo' => 'default.jpg',
                 'status'=>'active',
 
             ],
@@ -38,6 +39,7 @@ class UsersTableSeeder extends Seeder
                 'email'=>'user@gmail.com',
                 'password'=>Hash::make('111'),
                 'role'=>'user',
+                'photo' => 'default.jpg',
                 'status'=>'active',
 
             ],

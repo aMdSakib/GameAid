@@ -1,12 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Welcome to GameAid') }}
-            </h2>
-            <a href="{{ route('dashboard') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Go to Dashboard
-            </a>
+            <div class="flex justify-between items-center">
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    {{ __('Welcome to GameAid') }}
+                </h2>
+                @if (Route::has('login'))
+                    <div class="flex space-x-4">
+                        <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                            Sign In
+                        </a>
+                        <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                            Register
+                        </a>
+                    </div>
+                @endif
+            </div>
         </div>
     </x-slot>
 

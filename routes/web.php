@@ -5,14 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
 Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/home', function () {
-        return view('homepage');
-    })->name('home');
-});
+    return view('homepage');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -53,3 +47,7 @@ Route::get('/game/zelda_tears_of_kingdom', function () {
 require __DIR__.'/auth.php';
 
 Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+
+//Adding Games
+Route::post('/add-game', [\App\Http\Controllers\GameController::class, 'addGame'])->middleware('auth')->name('add.game');
+
