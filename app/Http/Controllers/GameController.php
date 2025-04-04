@@ -42,4 +42,25 @@ class GameController extends Controller
         // Redirect back with a success message
         return redirect()->back()->with('success', 'Game added successfully!');
     }
+
+    public function getLatestGameNews()
+    {
+    // Fetch the latest game news from your data source
+    // This could be from a database or an external API
+    $latestNews = [
+        [
+            'title' => 'Game News Title 1',
+            'image' => 'path/to/image1.jpg',
+            'link' => 'link/to/news1'
+        ],
+        [
+            'title' => 'Game News Title 2',
+            'image' => 'path/to/image2.jpg',
+            'link' => 'link/to/news2'
+        ],
+        // Add more news items as needed
+    ];
+
+    return $latestNews;
+    }
 }
