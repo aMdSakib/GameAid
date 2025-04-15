@@ -56,3 +56,5 @@ Route::post('/admin/add-game', [\App\Http\Controllers\AdminController::class, 'a
 Route::delete('/admin/delete-game/{id}', [\App\Http\Controllers\AdminController::class, 'deleteGame'])->middleware('auth')->name('admin.delete.game');
 Route::post('/admin/add-news', [\App\Http\Controllers\AdminController::class, 'addNewsArticle'])->middleware('auth')->name('admin.add.news');
 
+Route::get('/games/{id}', [\App\Http\Controllers\GameController::class, 'show'])->name('games.show');
+

@@ -22,30 +22,45 @@
     <div class="py-12 bg-gray-900 text-white min-h-screen"> <!-- Updated here -->
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
+            <form method="GET" action="{{ route('home') }}" class="mb-6">
+                <input
+                    type="text"
+                    name="search"
+                    value="{{ $search ?? '' }}"
+                    placeholder="Search games..."
+                    class="w-full max-w-md px-4 py-2 rounded-md text-gray-900"
+                />
+                <button type="submit" class="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+                    Search
+                </button>
+            </form>
+
             <h2 class="text-2xl font-semibold mb-6">Featured Games</h2>
             <div class="flex flex-wrap gap-6 justify-start mb-12"> <!-- Games side by side with wrap -->
                 @foreach ($games as $game)
                 <div class="game-card flex flex-col items-center">
-                    <a href="#">
-                        <img src="{{ $game->image_path ? asset($game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="game-image">
+                    <a href="{{ route('games.show', $game->id) }}">
+                        <img src="{{ $game->image_path ? asset($game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
                     </a>
-                    <h3 class="mt-2 font-bold text-center">{{ $game->name }}</h3>
+                    <h3 class="mt-2 font-bold text-center">
+                        <a href="{{ route('games.show', $game->id) }}">{{ $game->name }}</a>
+                    </h3>
                 </div>
                 @endforeach
             </div>
 
             <!-- New News Section -->
             <h2 class="text-2xl font-semibold mb-6">Latest News</h2>
-            <div class="grid grid-cols-3 gap-8 mt-4"> <!-- Grid layout for news items -->
-                @foreach ($news as $article)
-                <div class="news-card">
-                    <a href="{{ $article->link ?? '#' }}">
-                        <img src="{{ asset($article->image_path) }}" alt="{{ $article->title }}" class="news-image" style="width: 330px;">
-                    </a>
-                    <h3 class="font-bold">{{ $article->title }}</h3>
+                <div class="grid grid-cols-3 gap-8 mt-4"> <!-- Grid layout for news items -->
+                    @foreach ($news as $article)
+                    <div class="news-card">
+                        <a href="{{ $article->link ?? '#' }}">
+                            <img src="{{ asset($article->image_path) }}" alt="{{ $article->title }}" class="w-48 aspect-[4/3] object-cover rounded-md news-image">
+                        </a>
+                        <h3 class="font-bold">{{ $article->title }}</h3>
+                    </div>
+                    @endforeach
                 </div>
-                @endforeach
-            </div>
         </div>
     </div>
 

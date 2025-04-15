@@ -17,13 +17,21 @@ class AdminController extends Controller
 
     public function addGame(Request $request)
     {
+        Log::info('addGame Request Data:', $request->all());
+
         $request->validate([
             'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'nullable|string',
+            'characters' => 'nullable|string',
+            'game_details' => 'nullable|string',
         ]);
 
         $game = new Game();
         $game->name = $request->name;
+        $game->description = $request->description;
+        $game->characters = $request->characters;
+        $game->game_details = $request->game_details;
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');

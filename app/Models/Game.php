@@ -9,12 +9,9 @@ class Game extends Model
 {
     use HasFactory;
 
-    protected $table = 'games'; // Specify the table name if it differs from the model name
-
     protected $fillable = [
         'name',
         'image_path',
+        'user_id',
     ];
-
-    public $timestamps = true; // Enable automatic handling of created_at and updated_at
 }

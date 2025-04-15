@@ -8,15 +8,21 @@ use App\Models\News;
 
 class HomeController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all games
-        $games = Game::all();
+        $search = $request->input('search');
+
+        // Fetch games filtered by search query if provided
+        if ($search) {
+            $games = Game::where('name', 'like', '%' . $search . '%')->get();
+        } else {
+            $games = Game::all();
+        }
 
         // Fetch latest news, for example latest 5 news articles
         $news = News::orderBy('created_at', 'desc')->take(5)->get();
 
         // Return the homepage view with games and news data
-        return view('homepage', compact('games', 'news'));
+        return view('homepage', compact('games', 'news', 'search'));
     }
 }

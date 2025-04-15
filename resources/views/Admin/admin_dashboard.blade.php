@@ -28,11 +28,23 @@
                     @csrf
                     <div class="mb-4">
                         <label for="name" class="block font-medium text-sm text-gray-300">Game Name</label>
-                        <input type="text" name="name" id="name" required class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white" />
+                    <input type="text" name="name" id="name" required class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white" />
                     </div>
                     <div class="mb-4">
                         <label for="image" class="block font-medium text-sm text-gray-300">Upload Image (Optional)</label>
                         <input type="file" name="image" id="image" class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white" />
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block font-medium text-sm text-gray-300">Description</label>
+                        <textarea name="description" id="description" rows="3" class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="characters" class="block font-medium text-sm text-gray-300">Characters</label>
+                        <textarea name="characters" id="characters" rows="3" class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="game_details" class="block font-medium text-sm text-gray-300">Game Details</label>
+                        <textarea name="game_details" id="game_details" rows="3" class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white"></textarea>
                     </div>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Add Game</button>
                 </form>
