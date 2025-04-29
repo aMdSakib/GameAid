@@ -22,6 +22,17 @@ class ProfileController extends Controller
     }
 
     /**
+     * Display the user's games with progression.
+     */
+    public function games(Request $request): View
+    {
+        $user = $request->user();
+        $games = $user->games()->get();
+
+        return view('profile.games', compact('games'));
+    }
+
+    /**
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse

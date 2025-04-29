@@ -10,7 +10,7 @@
 
             <!-- Display success and error messages -->
             @if(session('success'))
-                <div class="bg-green-500 text-white p-4 rounded mb-4">
+                <div class="bg-white text-red-600 p-4 rounded mb-4">
                     {{ session('success') }}
                 </div>
             @endif
@@ -63,9 +63,9 @@
                     </thead>
                     <tbody class="bg-gray-900 divide-y divide-gray-700">
                         @foreach ($games as $game)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-white">{{ $game->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-white">{{ $game->image_path }}</td>
+                        <tr class="text-white">
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $game->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $game->image_path }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                 <form method="POST" action="{{ route('admin.delete.game', $game->id) }}" onsubmit="return confirm('Are you sure you want to delete this game?');">
                                     @csrf
