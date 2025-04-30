@@ -37,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Get the games played by the user.
+     */
+    public function games()
+    {
+        return $this->hasMany(Game::class);
+    }
 }

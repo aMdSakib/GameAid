@@ -7,21 +7,30 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}">
                         <img src="{{ asset('Images/logo.png') }}" alt="Logo" class="h-9 w-auto">
-
-
                     </a>
+<a href="{{ route('home') }}" class="ml-4 bg-blue-600 text-gray-700 px-3 py-1 rounded hover:bg-blue-700 hover:text-white transition-colors duration-300">
+    Home
+</a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    @if (Auth::check() && Auth::user()->role === 'admin')
+                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        {{ __('Admin Dashboard') }}
+                    </x-nav-link>
+                    @elseif (Auth::check())
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    @if (Auth::check())
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                     @endif
+                    <!-- Removed Community link near Admin Dashboard as per request -->
+                    <!-- <x-nav-link :href="route('community.index')" :active="request()->routeIs('community.index')">
+                        {{ __('Community') }}
+                    </x-nav-link> -->
                 </div>
             </div>
 
@@ -56,9 +65,9 @@
         </x-dropdown>
     </div>
 @else
-    <div class="hidden sm:flex sm:items-center sm:ml-6">
+    <div class="hidden sm:flex sm:items-center sm:ml-6 space-x-4">
         <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-            {{ __('Log In') }}
+            {{ __('Sign In') }}
         </x-nav-link>
         <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
             {{ __('Register') }}
