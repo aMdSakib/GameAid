@@ -4,18 +4,30 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;  
 use App\Http\Controllers\AdminController;
 
-Route::get('/', function () {
-    return view('homepage');
-})->name('home');
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GameController;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+use App\Http\Controllers\DashboardController;
+
+Route::get('/my_space', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('my_space');
+
+// Remove the old dashboard route if exists
+// Route::get('/dashboard', [DashboardController::class, 'index'])
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+Route::get('/games', [GameController::class, 'listGames'])->name('games.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/profile/games', [ProfileController::class, 'games'])->name('profile.games');
 });
 Route::get('/game/witcher3', function () {
     return view('games.witcher3');
@@ -46,8 +58,42 @@ Route::get('/game/zelda_tears_of_kingdom', function () {
 })->name('game.zelda_tears_of_kingdom');
 require __DIR__.'/auth.php';
 
-Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+// Community page routes
+use App\Http\Controllers\ExperienceController;
+
+Route::middleware('auth')->group(function () {
+    Route::get('/community', [ExperienceController::class, 'index'])->name('community.index');
+    Route::post('/community', [ExperienceController::class, 'store'])->name('community.store');
+    Route::get('/community/create', [ExperienceController::class, 'create'])->name('community.create');
+
+    Route::post('/community/{experience}/answer', [ExperienceController::class, 'storeAnswer'])->name('community.answer.store');
+
+    // Added routes for like and dislike buttons to work
+    Route::post('/community/like-post/{id}', [ExperienceController::class, 'likePost'])->name('community.like.post');
+    Route::post('/community/dislike-post/{id}', [ExperienceController::class, 'dislikePost'])->name('community.dislike.post');
+
+    Route::post('/community/like-answer/{id}', [ExperienceController::class, 'likeAnswer'])->name('community.like.answer');
+    Route::post('/community/dislike-answer/{id}', [ExperienceController::class, 'dislikeAnswer'])->name('community.dislike.answer');
+});
+
+Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->middleware('auth')->name('admin.dashboard');
+
+Route::post('/admin/approve-experience/{id}', [AdminController::class, 'approveExperience'])->middleware('auth')->name('admin.approve.experience');
+Route::delete('/admin/reject-experience/{id}', [AdminController::class, 'rejectExperience'])->middleware('auth')->name('admin.reject.experience');
+
+// Admin routes for answer approval
+Route::post('/admin/approve-answer/{id}', [AdminController::class, 'approveAnswer'])->middleware('auth')->name('admin.approve.answer');
+Route::delete('/admin/reject-answer/{id}', [AdminController::class, 'rejectAnswer'])->middleware('auth')->name('admin.reject.answer');
 
 //Adding Games
 Route::post('/add-game', [\App\Http\Controllers\GameController::class, 'addGame'])->middleware('auth')->name('add.game');
+
+// Admin Panel Routes
+Route::post('/admin/add-game', [\App\Http\Controllers\AdminController::class, 'addGame'])->middleware('auth')->name('admin.add.game');
+Route::delete('/admin/delete-game/{id}', [\App\Http\Controllers\AdminController::class, 'deleteGame'])->middleware('auth')->name('admin.delete.game');
+Route::post('/admin/add-news', [\App\Http\Controllers\AdminController::class, 'addNewsArticle'])->middleware('auth')->name('admin.add.news');
+
+Route::delete('/admin/delete-news/{id}', [\App\Http\Controllers\AdminController::class, 'deleteNewsArticle'])->middleware('auth')->name('admin.delete.news');
+
+Route::get('/games/{id}', [\App\Http\Controllers\GameController::class, 'show'])->name('games.show');
 

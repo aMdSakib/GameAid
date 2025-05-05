@@ -16,7 +16,7 @@ class HomeController extends Controller
         if ($search) {
             $games = Game::where('name', 'like', '%' . $search . '%')->get();
         } else {
-            $games = Game::all();
+            $games = Game::orderBy('created_at', 'desc')->take(3)->get();
         }
 
         // Fetch latest news, for example latest 5 news articles

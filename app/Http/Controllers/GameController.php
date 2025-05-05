@@ -45,22 +45,39 @@ class GameController extends Controller
 
     public function getLatestGameNews()
     {
-    // Fetch the latest game news from your data source
-    // This could be from a database or an external API
-    $latestNews = [
-        [
-            'title' => 'Game News Title 1',
-            'image' => 'path/to/image1.jpg',
-            'link' => 'link/to/news1'
-        ],
-        [
-            'title' => 'Game News Title 2',
-            'image' => 'path/to/image2.jpg',
-            'link' => 'link/to/news2'
-        ],
-        // Add more news items as needed
-    ];
+        // Fetch the latest game news from your data source
+        // This could be from a database or an external API
+        $latestNews = [
+            [
+                'title' => 'Game News Title 1',
+                'image' => 'path/to/image1.jpg',
+                'link' => 'link/to/news1'
+            ],
+            [
+                'title' => 'Game News Title 2',
+                'image' => 'path/to/image2.jpg',
+                'link' => 'link/to/news2'
+            ],
+            // Add more news items as needed
+        ];
 
-    return $latestNews;
+        return $latestNews;
+    }
+
+    public function listGames()
+    {
+        $games = Game::all();
+        return view('games.index', compact('games'));
+    }
+
+    public function show($id)
+    {
+        $game = Game::find($id);
+
+        if (!$game) {
+            abort(404, 'Game not found');
+        }
+
+        return view('games.show', compact('game'));
     }
 }

@@ -9,13 +9,27 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+            <div class="bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-100">
                     {{ __("You're logged in!") }}
                 </div>
                 
                 <div class="p-6">
-<form method="POST" action="{{ route('add.game') }}" id="addGameForm">
+                    @if(session('success'))
+                        <div class="mb-4 p-4 text-green-600 rounded">
+                            {{ session('success') }}
+                        </div>
+                    @elseif(session('error'))
+                        <div class="mb-4 p-4 bg-red-600 text-white rounded">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+                    <a href="{{ route('profile.games') }}" class="inline-block mb-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        View My Games
+                    </a>
+                </div>
+                <div class="p-6">
+                    <form method="POST" action="{{ route('add.game') }}" id="addGameForm">
                         @csrf
                         <label for="gameSelect" class="block text-sm font-medium text-gray-700">Select a Game:</label>
                         <select id="gameSelect" name="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
@@ -28,6 +42,7 @@
                             <option value="ghost_of_tsushima">Ghost of Tsushima</option>
                             <option value="zelda_tears_of_kingdom">The Legend of Zelda: Tears of the Kingdom</option>
                         </select>
+                        <input type="hidden" id="imagePath" name="image_path" value="">
                         <button type="submit" class="mt-2 bg-purple-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded">
                             Add Game
                         </button>
@@ -35,25 +50,36 @@
                 </div>
                 <div class="p-6">
                     <h3 class="text-lg font-semibold">Selected Games:</h3>
-                    <table class="min-w-full divide-y divide-gray-200 mt-4 border border-black">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Game Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="gameTableBody">
-                            <!-- Selected game details will be populated here -->
-                        </tbody>
-                    </table>
+                    @if($games->isEmpty())
+                        <p class="text-gray-400">No games added yet.</p>
+                    @else
+                        <table class="min-w-full divide-y divide-gray-200 mt-4 border border-black">
+                            <thead>
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Game Name</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($games as $game)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">{{ $game->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+                                            <img src="{{ $game->image_path }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+                                            <!-- Action buttons can be added here -->
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
-
-
-    
 
     <script>
         const gameSelect = document.getElementById('gameSelect');
@@ -74,6 +100,9 @@
             const selectedGame = this.value;
             if (selectedGame) {
                 const gameImage = gameImages[selectedGame]; // Fetch the image from the mapping
+
+                // Update hidden input with image path
+                document.getElementById('imagePath').value = gameImage;
 
                 // Create a new row for the selected game
                 const gameRow = document.createElement('tr');
