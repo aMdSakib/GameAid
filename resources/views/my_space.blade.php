@@ -32,15 +32,11 @@
                     <form method="POST" action="{{ route('add.game') }}" id="addGameForm">
                         @csrf
                         <label for="gameSelect" class="block text-sm font-medium text-gray-700">Select a Game:</label>
-                        <select id="gameSelect" name="name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <select id="gameSelect" name="game_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                             <option value="">-- Select a Game --</option>
-                            <option value="witcher3">The Witcher 3: Wild Hunt</option>
-                            <option value="pokemonza">Pokemon Z-A</option>
-                            <option value="gta6">GTA VI</option>
-                            <option value="rdr2">Red Dead Redemption 2</option>
-                            <option value="ac_black_flag">Assassin's Creed: Black Flag</option>
-                            <option value="ghost_of_tsushima">Ghost of Tsushima</option>
-                            <option value="zelda_tears_of_kingdom">The Legend of Zelda: Tears of the Kingdom</option>
+                            @foreach($allGames as $game)
+                                <option value="{{ $game->id }}">{{ $game->name }}</option>
+                            @endforeach
                         </select>
                         <input type="hidden" id="imagePath" name="image_path" value="">
                         <button type="submit" class="mt-2 bg-purple-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded">
@@ -58,6 +54,7 @@
                                 <tr>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Game Name</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Image</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Review</th>
                                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
                                 </tr>
                             </thead>
@@ -66,10 +63,33 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">{{ $game->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+<<<<<<< Updated upstream
                                             <img src="{{ $game->image_path }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
                                             <!-- Action buttons can be added here -->
+=======
+<img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : asset('Images/' . str_replace(' ', '%20', $game->image_path)) }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+                                            <form method="POST" action="{{ route('my_space.review_game', $game->id) }}">
+                                                @csrf
+                                                <select name="rating" class="bg-gray-700 text-white rounded px-2 py-1">
+                                                    <option value="">Rate</option>
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <option value="{{ $i }}" {{ isset($userReviews[$game->id]) && $userReviews[$game->id]->rating == $i ? 'selected' : '' }}>{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
+                                                    @endfor
+                                                </select>
+                                                <button type="submit" class="ml-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded">Submit</button>
+                                            </form>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+                                            <form method="POST" action="{{ route('my_space.delete_game', $game->id) }}" onsubmit="return confirm('Are you sure you want to delete this game?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
+                                            </form>
+>>>>>>> Stashed changes
                                         </td>
                                     </tr>
                                 @endforeach
@@ -96,10 +116,22 @@
             zelda_tears_of_kingdom: '{{ asset('Images/zelda_tears_of_kingdom.jpg') }}'
         };
 
+        // Mapping of game identifiers to proper game names
+        const gameNames = {
+            witcher3: 'The Witcher 3: Wild Hunt',
+            pokemonza: 'Pokemon Z-A',
+            gta6: 'GTA VI',
+            rdr2: 'Red Dead Redemption 2',
+            ac_black_flag: "Assassin's Creed: Black Flag",
+            ghost_of_tsushima: 'Ghost of Tsushima',
+            zelda_tears_of_kingdom: 'The Legend of Zelda: Tears of the Kingdom'
+        };
+
         gameSelect.addEventListener('change', function() {
             const selectedGame = this.value;
             if (selectedGame) {
                 const gameImage = gameImages[selectedGame]; // Fetch the image from the mapping
+                const gameName = gameNames[selectedGame]; // Fetch the proper game name
 
                 // Update hidden input with image path
                 document.getElementById('imagePath').value = gameImage;
@@ -107,9 +139,9 @@
                 // Create a new row for the selected game
                 const gameRow = document.createElement('tr');
                 gameRow.innerHTML = `
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${selectedGame}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">${gameName}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        <img src="${gameImage}" alt="${selectedGame}" style="width: 300px; height: 400px;"> <!-- Set size to 300x400 -->
+                        <img src="${gameImage}" alt="${gameName}" style="width: 300px; height: 400px;"> <!-- Set size to 300x400 -->
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         <button class="delete-button text-red-500 hover:text-red-700">Delete</button>

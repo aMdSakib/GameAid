@@ -125,14 +125,44 @@
             </div>
             @endif
 
+<<<<<<< Updated upstream
             <!-- Existing Games List with Delete -->
             <div class="bg-gray-900 shadow rounded-lg p-6">
+=======
+            <!-- Existing Games List with Edit and Delete -->
+            <div class="bg-gray-900 shadow rounded-lg p-6 space-y-4">
+>>>>>>> Stashed changes
                 <h3 class="text-lg font-semibold mb-4 text-white">Existing Games</h3>
+                @foreach ($games as $game)
+                <div class="bg-gray-800 rounded-lg p-4 flex items-center justify-between text-white">
+                    <div class="flex items-center space-x-6">
+                        <div>
+                            <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : asset('Images/' . str_replace(' ', '%20', $game->image_path)) }}" alt="{{ $game->name }}" class="w-24 h-24 object-cover rounded-md">
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold">{{ $game->name }}</h4>
+                            <p class="text-sm text-gray-300">{{ Str::limit($game->description, 100) }}</p>
+                        </div>
+                    </div>
+                    <div class="space-x-4">
+                        <a href="{{ route('admin.edit.game', $game->id) }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">Edit</a>
+                        <form method="POST" action="{{ route('admin.delete.game', $game->id) }}" onsubmit="return confirm('Are you sure you want to delete this game?');" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+
+            <!-- Mission Control Section -->
+            <div class="bg-gray-900 shadow rounded-lg p-6 mt-8">
+                <h3 class="text-lg font-semibold mb-4 text-white">Mission Control</h3>
                 <table class="min-w-full divide-y divide-gray-700">
                     <thead>
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Image Path</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Game</th>
                             <th class="px-6 py-3"></th>
                         </tr>
                     </thead>
@@ -140,13 +170,8 @@
                         @foreach ($games as $game)
                         <tr class="text-white">
                             <td class="px-6 py-4 whitespace-nowrap">{{ $game->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $game->image_path }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <form method="POST" action="{{ route('admin.delete.game', $game->id) }}" onsubmit="return confirm('Are you sure you want to delete this game?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-900">Delete</button>
-                                </form>
+                                <a href="{{ route('admin.missions.index', $game->id) }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors duration-300">Mission Control</a>
                             </td>
                         </tr>
                         @endforeach

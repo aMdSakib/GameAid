@@ -10,36 +10,35 @@ class GameController extends Controller
 {
     public function addGame(Request $request)
     {
-        // Log the incoming request data for debugging
-        Log::info('Adding game with request data: ', $request->all());
-        
         // Validate the request
-        try {
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'image_path' => 'required|string|max:255',
-            ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
-            Log::error('Validation failed: ', $e->errors());
-            return redirect()->back()->with('error', 'Validation failed. Please check your input.');
+        $request->validate([
+            'game_id' => 'required|integer|exists:games,id',
+        ]);
+
+        $user = auth()->user();
+        $gameId = $request->input('game_id');
+
+        // Find the game by id
+        $game = Game::find($gameId);
+
+        if (!$game) {
+            return redirect()->back()->with('error', 'Selected game does not exist.');
         }
-    
-        // Create a new game instance and associate it with the authenticated user
-        $game = new Game();
-        $game->name = $request->name;
-        $game->image_path = $request->image_path;
-        $game->user_id = auth()->id(); // Set the user_id to the authenticated user's ID
-        
-        // Attempt to save the game and log any errors
+
+        // Check if the game is already assigned to the user
+        if ($user->games()->where('id', $gameId)->exists()) {
+            return redirect()->back()->with('error', 'You have already added this game.');
+        }
+
+        // Assign the game to the user by setting user_id
+        $game->user_id = $user->id;
+
         try {
             $game->save();
-            Log::info('Game added successfully: ', $game->toArray());
         } catch (\Exception $e) {
-            Log::error('Failed to add game: ' . $e->getMessage());
             return redirect()->back()->with('error', 'Failed to add game.');
         }
-        
-        // Redirect back with a success message
+
         return redirect()->back()->with('success', 'Game added successfully!');
     }
 
@@ -67,7 +66,19 @@ class GameController extends Controller
     public function listGames()
     {
         $games = Game::all();
+<<<<<<< Updated upstream
         return view('games.index', compact('games'));
+=======
+
+        // Calculate average rating for each game
+        $gameIds = $games->pluck('id')->toArray();
+        $averageRatings = \App\Models\UserGameReview::whereIn('game_id', $gameIds)
+            ->selectRaw('game_id, AVG(rating) as avg_rating')
+            ->groupBy('game_id')
+            ->pluck('avg_rating', 'game_id');
+
+        return view('games.index', compact('games', 'averageRatings'));
+>>>>>>> Stashed changes
     }
 
     public function show($id)

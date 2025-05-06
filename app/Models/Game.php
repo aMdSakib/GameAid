@@ -14,4 +14,14 @@ class Game extends Model
         'image_path',
         'user_id',
     ];
+
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
+
+    public function userGameReviews()
+    {
+        return $this->hasMany(UserGameReview::class);
+    }
 }

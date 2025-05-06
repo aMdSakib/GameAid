@@ -16,7 +16,15 @@ class HomeController extends Controller
         if ($search) {
             $games = Game::where('name', 'like', '%' . $search . '%')->get();
         } else {
+<<<<<<< Updated upstream
             $games = Game::orderBy('created_at', 'desc')->take(3)->get();
+=======
+            // Fetch 4 latest games with average review stars
+            $games = Game::withAvg('userGameReviews', 'rating')
+                ->orderBy('created_at', 'desc')
+                ->take(4)
+                ->get();
+>>>>>>> Stashed changes
         }
 
         // Fetch latest news, for example latest 5 news articles

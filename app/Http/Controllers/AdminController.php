@@ -176,5 +176,67 @@ class AdminController extends Controller
         $answer->delete();
 
         return redirect()->back()->with('success', 'Answer rejected and deleted successfully.');
+<<<<<<< Updated upstream
+=======
+    }
+
+    public function updateGameImage(Request $request, $id)
+    {
+        $game = Game::find($id);
+        if (!$game) {
+            return redirect()->back()->with('error', 'Game not found.');
+        }
+
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('Images'), $imageName);
+            $game->image_path = $imageName;
+            $game->save();
+            return redirect()->back()->with('success', 'Game image updated successfully.');
+        }
+
+        return redirect()->back()->with('error', 'No image uploaded.');
+    }
+
+    public function updateGameDetails(Request $request, $id)
+    {
+        $game = Game::find($id);
+        if (!$game) {
+            return redirect()->back()->with('error', 'Game not found.');
+        }
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'characters' => 'nullable|string',
+            'game_details' => 'nullable|string',
+        ]);
+
+        $game->name = $request->input('name');
+        $game->description = $request->input('description');
+        $game->characters = $request->input('characters');
+        $game->game_details = $request->input('game_details');
+
+        try {
+            $game->save();
+            return redirect()->route('admin.edit.game', $id)->with('success', 'Game details updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.edit.game', $id)->with('error', 'Failed to update game details.');
+        }
+    }
+
+    public function editGame($id)
+    {
+        $game = Game::find($id);
+        if (!$game) {
+            return redirect()->route('admin.dashboard')->with('error', 'Game not found.');
+        }
+        return view('admin.edit_game', compact('game'));
+>>>>>>> Stashed changes
     }
 }
