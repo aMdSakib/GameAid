@@ -1,18 +1,17 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex justify-between items-center bg-gray-300 text-white px-6 py-4 rounded">
+        <div class="flex justify-between items-center bg-gray-300 text-black px-6 py-4 rounded">
             <div class="flex justify-between items-center w-full">
                 <h2 class="font-semibold text-xl leading-tight">
                     {{ __('Welcome to GameAid') }}
                 </h2>
-                @if (Route::has('login'))
+                <!-- Removed extra community button as per previous request -->
+                <!-- <a href="{{ route('community.index') }}" class="ml-4 bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">
+                    Community
+                </a> -->
+                @if (Route::has('login') && !Auth::check())
                     <div class="flex space-x-4">
-                        <a href="{{ route('login') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            Sign In
-                        </a>
-                        <a href="{{ route('register') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Register
-                        </a>
+                        <!-- Removed duplicate Sign In and Register buttons as per request -->
                     </div>
                 @endif
             </div>
@@ -23,6 +22,7 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
 
+<<<<<<< Updated upstream
     <div class="py-12">
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
             <h2 class="text-2xl font-semibold mb-6">Featured Games</h2>
@@ -68,11 +68,36 @@
                         <img src="{{ asset('Images/zelda_tears_of_kingdom.jpg') }}" alt="The Legend of Zelda: Tears of the Kingdom" class="game-image">
                     </a>
                     <h3 class="font-bold">The Legend of Zelda: Tears of the Kingdom</h3>
+=======
+            <h2 class="text-2xl font-semibold mb-6">Latest Games</h2>
+            <div class="flex flex-wrap gap-6 justify-start mb-12"> <!-- Games side by side with wrap -->
+                @foreach ($games as $game)
+                <div class="game-card flex flex-col items-center">
+                    <a href="{{ route('games.show', $game->id) }}">
+                        <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
+                    </a>
+                    <h3 class="mt-2 font-bold text-center">
+                        <a href="{{ route('games.show', $game->id) }}">{{ $game->name }}</a>
+                    </h3>
+                    <div class="flex items-center mt-1 space-x-1">
+                        @php
+                            $avgStars = round($game->user_game_reviews_avg_rating ?? 0);
+                        @endphp
+                        @for ($i = 1; $i <= 5; $i++)
+                            @if ($i <= $avgStars)
+                                <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.39 2.462a1 1 0 00-.364 1.118l1.287 3.974c.3.922-.755 1.688-1.54 1.118l-3.39-2.462a1 1 0 00-1.175 0l-3.39 2.462c-.784.57-1.838-.196-1.539-1.118l1.287-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z"/></svg>
+                            @else
+                                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.974a1 1 0 00.95.69h4.18c.969 0 1.371 1.24.588 1.81l-3.39 2.462a1 1 0 00-.364 1.118l1.287 3.974c.3.922-.755 1.688-1.54 1.118l-3.39-2.462a1 1 0 00-1.175 0l-3.39 2.462c-.784.57-1.838-.196-1.539-1.118l1.287-3.974a1 1 0 00-.364-1.118L2.045 9.4c-.783-.57-.38-1.81.588-1.81h4.18a1 1 0 00.95-.69l1.286-3.974z"/></svg>
+                            @endif
+                        @endfor
+                    </div>
+>>>>>>> Stashed changes
                 </div>
             </div>
 
             <!-- New News Section -->
             <h2 class="text-2xl font-semibold mb-6">Latest News</h2>
+<<<<<<< Updated upstream
             <div class="grid grid-cols-3 gap-8 mt-4"> <!-- Grid layout for news items -->
                 <div class="news-card">
                     <a href="#">
@@ -94,6 +119,22 @@
                 </div>
                 <!-- Add more news items as needed -->
             </div>
+=======
+            <ul class="space-y-4">
+                @foreach ($news as $article)
+                <li class="flex items-center space-x-4 p-4 bg-gray-800 rounded-md hover:bg-gray-700 transition">
+                    <a href="{{ $article->link ?? '#' }}">
+                        <img src="{{ asset('Images/' . $article->image_path) }}" alt="{{ $article->title }}" class="w-24 h-24 object-cover rounded-md">
+                    </a>
+                    <div>
+                        <a href="{{ $article->link ?? '#' }}" class="text-lg font-semibold hover:underline" target="_blank" rel="noopener noreferrer">
+                            {{ $article->title }}
+                        </a>
+                    </div>
+                </li>
+                @endforeach
+            </ul>
+>>>>>>> Stashed changes
         </div>
     </div>
 
@@ -117,6 +158,11 @@
 
         .news-image:hover {
             transform: scale(1.1); /* Enlarge image on hover */
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
         }
     </style>
 

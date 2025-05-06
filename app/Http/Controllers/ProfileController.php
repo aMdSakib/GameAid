@@ -22,6 +22,37 @@ class ProfileController extends Controller
     }
 
     /**
+<<<<<<< Updated upstream
+=======
+     * Display the user's games with progression.
+     */
+    public function games(Request $request): View
+    {
+        $user = $request->user();
+        $games = $user->games()->with('missions')->get();
+
+        $progressData = [];
+
+        foreach ($games as $game) {
+            $missions = $game->missions;
+            $missionIds = $missions->pluck('id');
+
+            $completedCount = \App\Models\UserMissionProgress::where('user_id', $user->id)
+                ->whereIn('mission_id', $missionIds)
+                ->where('completed', true)
+                ->count();
+
+            $totalMissions = $missions->count();
+            $completionPercentage = $totalMissions > 0 ? round(($completedCount / $totalMissions) * 100) : 0;
+
+            $progressData[$game->id] = $completionPercentage;
+        }
+
+        return view('profile.games', compact('games', 'progressData'));
+    }
+
+    /**
+>>>>>>> Stashed changes
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse

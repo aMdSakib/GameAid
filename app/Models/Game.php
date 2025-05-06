@@ -16,5 +16,17 @@ class Game extends Model
         'image_path',
     ];
 
+<<<<<<< Updated upstream
     public $timestamps = true; // Enable automatic handling of created_at and updated_at
+=======
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
+
+    public function userGameReviews()
+    {
+        return $this->hasMany(UserGameReview::class);
+    }
+>>>>>>> Stashed changes
 }

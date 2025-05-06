@@ -37,4 +37,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+<<<<<<< Updated upstream
+=======
+
+    /**
+     * Get the games played by the user.
+     */
+    public function games()
+    {
+        return $this->hasMany(Game::class);
+    }
+
+    public function missionProgress()
+    {
+        return $this->hasMany(UserMissionProgress::class);
+    }
+>>>>>>> Stashed changes
 }
