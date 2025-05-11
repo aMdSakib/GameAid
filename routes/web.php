@@ -8,11 +8,8 @@ use App\Http\Controllers\AdminController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\AdminMissionController;
->>>>>>> Stashed changes
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -22,13 +19,10 @@ Route::get('/my_space', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('my_space');
 
-<<<<<<< Updated upstream
-=======
 Route::delete('/my_space/delete-game/{id}', [DashboardController::class, 'deleteGame'])
     ->middleware(['auth', 'verified'])
     ->name('my_space.delete_game');
 
->>>>>>> Stashed changes
 // Remove the old dashboard route if exists
 // Route::get('/dashboard', [DashboardController::class, 'index'])
 //     ->middleware(['auth', 'verified'])
@@ -110,10 +104,7 @@ Route::post('/admin/update-game-details/{id}', [\App\Http\Controllers\AdminContr
 Route::get('/admin/edit-game/{id}', [\App\Http\Controllers\AdminController::class, 'editGame'])->middleware('auth')->name('admin.edit.game');
 Route::post('/admin/add-news', [\App\Http\Controllers\AdminController::class, 'addNewsArticle'])->middleware('auth')->name('admin.add.news');
 
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 Route::delete('/admin/delete-news/{id}', [\App\Http\Controllers\AdminController::class, 'deleteNewsArticle'])->middleware('auth')->name('admin.delete.news');
 
 Route::get('/games/{id}', [\App\Http\Controllers\GameController::class, 'show'])->name('games.show');

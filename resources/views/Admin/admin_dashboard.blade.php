@@ -125,13 +125,8 @@
             </div>
             @endif
 
-<<<<<<< Updated upstream
-            <!-- Existing Games List with Delete -->
-            <div class="bg-gray-900 shadow rounded-lg p-6">
-=======
             <!-- Existing Games List with Edit and Delete -->
             <div class="bg-gray-900 shadow rounded-lg p-6 space-y-4">
->>>>>>> Stashed changes
                 <h3 class="text-lg font-semibold mb-4 text-white">Existing Games</h3>
                 @foreach ($games as $game)
                 <div class="bg-gray-800 rounded-lg p-4 flex items-center justify-between text-white">
