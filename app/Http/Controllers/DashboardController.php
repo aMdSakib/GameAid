@@ -14,9 +14,6 @@ class DashboardController extends Controller
         $games = $user->games()->get();
         $allGames = Game::all();
 
-<<<<<<< Updated upstream
-        return view('my_space', compact('games'));
-=======
         // Fetch user reviews for games
         $userReviews = \App\Models\UserGameReview::where('user_id', $user->id)->get()->keyBy('game_id');
 
@@ -58,6 +55,5 @@ class DashboardController extends Controller
         );
 
         return redirect()->route('my_space')->with('success', 'Your review has been submitted.');
->>>>>>> Stashed changes
     }
 }

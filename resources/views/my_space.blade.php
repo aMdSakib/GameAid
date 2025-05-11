@@ -63,12 +63,6 @@
                                     <tr>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">{{ $game->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-<<<<<<< Updated upstream
-                                            <img src="{{ $game->image_path }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
-                                            <!-- Action buttons can be added here -->
-=======
 <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : asset('Images/' . str_replace(' ', '%20', $game->image_path)) }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
@@ -89,7 +83,6 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
                                             </form>
->>>>>>> Stashed changes
                                         </td>
                                     </tr>
                                 @endforeach

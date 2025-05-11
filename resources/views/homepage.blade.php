@@ -39,11 +39,7 @@
                 @foreach ($games as $game)
                 <div class="game-card flex flex-col items-center">
                     <a href="{{ route('games.show', $game->id) }}">
-<<<<<<< Updated upstream
-                        <img src="{{ $game->image_path ? asset('Images/' . $game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
-=======
                         <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
->>>>>>> Stashed changes
                     </a>
                     <h3 class="mt-2 font-bold text-center">
                         <a href="{{ route('games.show', $game->id) }}">{{ $game->name }}</a>

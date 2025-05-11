@@ -176,8 +176,6 @@ class AdminController extends Controller
         $answer->delete();
 
         return redirect()->back()->with('success', 'Answer rejected and deleted successfully.');
-<<<<<<< Updated upstream
-=======
     }
 
     public function updateGameImage(Request $request, $id)
@@ -237,6 +235,5 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Game not found.');
         }
         return view('admin.edit_game', compact('game'));
->>>>>>> Stashed changes
     }
 }
