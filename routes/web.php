@@ -9,6 +9,11 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GameController;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\MissionController;
+use App\Http\Controllers\AdminMissionController;
+>>>>>>> Stashed changes
 =======
 use App\Http\Controllers\MissionController;
 use App\Http\Controllers\AdminMissionController;
@@ -23,11 +28,22 @@ Route::get('/my_space', [DashboardController::class, 'index'])
     ->name('my_space');
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/choose_plan', [\App\Http\Controllers\ProfileController::class, 'choosePlan'])->name('choose_plan');
+    Route::post('/choose_plan', [\App\Http\Controllers\ProfileController::class, 'submitPlan'])->name('choose_plan.submit');
+});
+
+>>>>>>> Stashed changes
 Route::delete('/my_space/delete-game/{id}', [DashboardController::class, 'deleteGame'])
     ->middleware(['auth', 'verified'])
     ->name('my_space.delete_game');
 
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 // Remove the old dashboard route if exists
 // Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -42,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/profile/games', [ProfileController::class, 'games'])->name('profile.games');
+    Route::post('/profile/games/share', [\App\Http\Controllers\ProfileController::class, 'shareProgress'])->name('profile.games.share');
 });
 Route::get('/game/witcher3', function () {
     return view('games.witcher3');
@@ -76,9 +93,15 @@ require __DIR__.'/auth.php';
 use App\Http\Controllers\ExperienceController;
 
 Route::middleware('auth')->group(function () {
+<<<<<<< Updated upstream
     Route::get('/community', [ExperienceController::class, 'index'])->name('community.index');
     Route::post('/community', [ExperienceController::class, 'store'])->name('community.store');
     Route::get('/community/create', [ExperienceController::class, 'create'])->name('community.create');
+=======
+    Route::get('/community', [\App\Http\Controllers\ExperienceController::class, 'index'])->name('community.index');
+    Route::post('/community', [\App\Http\Controllers\ExperienceController::class, 'store'])->name('community.store');
+    Route::get('/community/create', [\App\Http\Controllers\ExperienceController::class, 'create'])->name('community.create');
+>>>>>>> Stashed changes
 
     Route::post('/community/{experience}/answer', [ExperienceController::class, 'storeAnswer'])->name('community.answer.store');
 
@@ -88,6 +111,16 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/community/like-answer/{id}', [ExperienceController::class, 'likeAnswer'])->name('community.like.answer');
     Route::post('/community/dislike-answer/{id}', [ExperienceController::class, 'dislikeAnswer'])->name('community.dislike.answer');
+<<<<<<< Updated upstream
+=======
+
+    // Report routes
+    Route::get('/community/report/{experienceId}', [ExperienceController::class, 'showReportForm'])->name('community.report.form');
+    Route::post('/community/report/{experienceId}', [ExperienceController::class, 'submitReport'])->name('community.report.submit');
+
+    // Admin report management
+    Route::delete('/admin/reported-post/{reportId}', [AdminController::class, 'deleteReportedPost'])->middleware('auth')->name('admin.reported_post.delete');
+>>>>>>> Stashed changes
 });
 
 Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->middleware('auth')->name('admin.dashboard');
@@ -111,6 +144,10 @@ Route::get('/admin/edit-game/{id}', [\App\Http\Controllers\AdminController::clas
 Route::post('/admin/add-news', [\App\Http\Controllers\AdminController::class, 'addNewsArticle'])->middleware('auth')->name('admin.add.news');
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 =======
 
 >>>>>>> Stashed changes

@@ -26,6 +26,7 @@ class GameController extends Controller
         }
 
         // Check if the game is already assigned to the user
+<<<<<<< Updated upstream
         if ($user->games()->where('id', $gameId)->exists()) {
             return redirect()->back()->with('error', 'You have already added this game.');
         }
@@ -35,6 +36,15 @@ class GameController extends Controller
 
         try {
             $game->save();
+=======
+        if ($user->games()->where('games.id', $gameId)->exists()) {
+            return redirect()->back()->with('error', 'You have already added this game.');
+        }
+
+        try {
+            // Attach the game to the user via pivot table
+            $user->games()->attach($gameId);
+>>>>>>> Stashed changes
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to add game.');
         }
@@ -67,8 +77,11 @@ class GameController extends Controller
     {
         $games = Game::all();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         return view('games.index', compact('games'));
 =======
+=======
+>>>>>>> Stashed changes
 
         // Calculate average rating for each game
         $gameIds = $games->pluck('id')->toArray();
@@ -78,6 +91,9 @@ class GameController extends Controller
             ->pluck('avg_rating', 'game_id');
 
         return view('games.index', compact('games', 'averageRatings'));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 

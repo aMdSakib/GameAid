@@ -51,6 +51,9 @@
                         <label for="game_details" class="block font-medium text-sm text-gray-300">Game Details</label>
                         <textarea name="game_details" id="game_details" rows="3" class="border-gray-700 rounded-md shadow-sm mt-1 block w-full bg-gray-800 text-white"></textarea>
                     </div>
+                    <div class="mb-4">
+                        
+                    </div>
                     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors duration-300">Add Game</button>
                 </form>
             </div>
@@ -126,8 +129,13 @@
             @endif
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             <!-- Existing Games List with Delete -->
             <div class="bg-gray-900 shadow rounded-lg p-6">
+=======
+            <!-- Existing Games List with Edit and Delete -->
+            <div class="bg-gray-900 shadow rounded-lg p-6 space-y-4">
+>>>>>>> Stashed changes
 =======
             <!-- Existing Games List with Edit and Delete -->
             <div class="bg-gray-900 shadow rounded-lg p-6 space-y-4">
@@ -231,6 +239,46 @@
 
         </div>
     </div>
+
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <!-- Reports Section -->
+            <div class="bg-red-700 shadow rounded-lg p-6 mt-6">
+                <h3 class="text-lg font-semibold mb-4 text-white">Reported Posts</h3>
+                @if($reports->count() > 0)
+                    <table class="min-w-full divide-y divide-gray-200 text-white">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Game</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Content</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Report</th>
+                                <th class="px-6 py-3"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($reports as $report)
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $report->experience->user->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ $report->experience->game->name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($report->experience->content, 100) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ Str::limit($report->report_text, 100) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
+                                    <form method="POST" action="{{ route('admin.reported_post.delete', $report->id) }}" class="inline" onsubmit="return confirm('Are you sure you want to delete this reported post?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">Delete Post</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <p class="text-white">No reported posts.</p>
+                @endif
+            </div>
+        </div>
+
 <script>
     function confirmAddGame() {
         const name = document.getElementById('name').value.trim();

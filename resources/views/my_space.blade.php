@@ -64,6 +64,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">{{ $game->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                                             <img src="{{ $game->image_path }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
@@ -72,6 +73,11 @@
 <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : asset('Images/' . str_replace(' ', '%20', $game->image_path)) }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+=======
+<img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : asset('Images/' . str_replace(' ', '%20', $game->image_path)) }}" alt="{{ $game->name }}" style="width: 300px; height: 400px;">
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-white">
+>>>>>>> Stashed changes
                                             <form method="POST" action="{{ route('my_space.review_game', $game->id) }}">
                                                 @csrf
                                                 <select name="rating" class="bg-gray-700 text-white rounded px-2 py-1">
@@ -89,6 +95,9 @@
                                                 @method('DELETE')
                                                 <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
                                             </form>
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                                         </td>
                                     </tr>
@@ -96,6 +105,42 @@
                             </tbody>
                         </table>
                     @endif
+                </div>
+                <!-- New section for user's community posts -->
+                <div class="p-6 bg-gray-800 mt-6 rounded-lg">
+                    <h3 class="text-lg font-semibold text-white mb-4">My Community Posts</h3>
+
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold text-white mb-2">My Posts</h4>
+                        @if(isset($myPosts) && $myPosts->isNotEmpty())
+                            @foreach($myPosts as $post)
+                                <div class="mb-4 p-4 bg-gray-700 rounded">
+                                    <p class="text-white"><strong>Game:</strong> {{ $post->game->name }}</p>
+                                    <p class="text-white mt-1">{{ $post->content }}</p>
+                                    <p class="text-gray-400 text-xs mt-1">{{ $post->created_at->diffForHumans() }}</p>
+                                    <p class="text-white mt-1">Likes: {{ $post->likes }} | Dislikes: {{ $post->dislikes }}</p>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-gray-400">You have not posted any experiences yet.</p>
+                        @endif
+                    </div>
+
+                    <div>
+                        <h4 class="text-md font-semibold text-white mb-2">My Questions</h4>
+                        @if(isset($myQuestions) && $myQuestions->isNotEmpty())
+                            @foreach($myQuestions as $post)
+                                <div class="mb-4 p-4 bg-gray-700 rounded">
+                                    <p class="text-white"><strong>Game:</strong> {{ $post->game->name }}</p>
+                                    <p class="text-white mt-1">{{ $post->content }}</p>
+                                    <p class="text-gray-400 text-xs mt-1">{{ $post->created_at->diffForHumans() }}</p>
+                                    <p class="text-white mt-1">Likes: {{ $post->likes }} | Dislikes: {{ $post->dislikes }}</p>
+                                </div>
+                            @endforeach
+                        @else
+                            <p class="text-gray-400">You have not asked any questions yet.</p>
+                        @endif
+                    </div>
                 </div>
             </div>
         </div>

@@ -8,6 +8,8 @@ use App\Models\News;
 use App\Models\Experience;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\Report;
+
 class AdminController extends Controller
 {
     public function AdminDashboard(){
@@ -19,9 +21,34 @@ class AdminController extends Controller
                 $query->where('type', 'question');
             })
             ->get();
+<<<<<<< Updated upstream
         $unapprovedCount = $unapprovedExperiences->count() + $unapprovedAnswers->count();
         return view('admin.admin_dashboard', compact('games', 'news', 'unapprovedExperiences', 'unapprovedAnswers', 'unapprovedCount'));
+=======
+
+        $reports = Report::with(['experience', 'user'])->orderBy('created_at', 'desc')->get();
+
+        $unapprovedCount = $unapprovedExperiences->count() + $unapprovedAnswers->count();
+        return view('admin.admin_dashboard', compact('games', 'news', 'unapprovedExperiences', 'unapprovedAnswers', 'unapprovedCount', 'reports'));
+>>>>>>> Stashed changes
     } //End Method
+
+    public function deleteReportedPost($reportId)
+    {
+        $report = Report::find($reportId);
+        if (!$report) {
+            return redirect()->back()->with('error', 'Report not found.');
+        }
+
+        $experience = $report->experience;
+        if ($experience) {
+            $experience->delete();
+        }
+
+        $report->delete();
+
+        return redirect()->back()->with('success', 'Reported post deleted successfully.');
+    }
 
     public function addGame(Request $request)
     {
@@ -48,6 +75,30 @@ class AdminController extends Controller
             $game->image_path = $imageName;
         } else {
             $game->image_path = 'no-image-available.png';
+<<<<<<< Updated upstream
+=======
+        }
+
+        $game->user_id = auth()->id();
+
+        try {
+            $game->save();
+            \Illuminate\Support\Facades\Log::info('Game added successfully: ', $game->toArray());
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to add game: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to add game.');
+        }
+
+        return redirect()->route('admin.dashboard')->with('success', 'Game added successfully!');
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->move(public_path('Images'), $imageName);
+            $game->image_path = $imageName;
+        } else {
+            $game->image_path = 'no-image-available.png';
+>>>>>>> Stashed changes
         }
 
         $game->user_id = auth()->id();
@@ -177,7 +228,10 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Answer rejected and deleted successfully.');
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
     }
 
     public function updateGameImage(Request $request, $id)
@@ -237,6 +291,9 @@ class AdminController extends Controller
             return redirect()->route('admin.dashboard')->with('error', 'Game not found.');
         }
         return view('admin.edit_game', compact('game'));
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }

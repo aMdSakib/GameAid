@@ -36,6 +36,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'premium_user' => 'boolean',
     ];
 
     /**
@@ -43,7 +44,12 @@ class User extends Authenticatable
      */
     public function games()
     {
-        return $this->hasMany(Game::class);
+        return $this->belongsToMany(Game::class, 'user_game');
+    }
+
+    public function missionProgress()
+    {
+        return $this->hasMany(UserMissionProgress::class);
     }
 
     public function missionProgress()

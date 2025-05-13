@@ -11,6 +11,7 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+<<<<<<< Updated upstream
         $games = $user->games()->get();
         $allGames = Game::all();
 
@@ -21,6 +22,36 @@ class DashboardController extends Controller
         $userReviews = \App\Models\UserGameReview::where('user_id', $user->id)->get()->keyBy('game_id');
 
         return view('my_space', compact('games', 'allGames', 'userReviews'));
+=======
+
+        // Restrict access to premium users only with popup flag
+        if (!$user->premium_user) {
+            return redirect('/')->with('show_premium_popup', true);
+        }
+
+        $games = $user->games()->get();
+        $allGames = Game::all();
+
+        // Fetch user reviews for games
+        $userReviews = \App\Models\UserGameReview::where('user_id', $user->id)->get()->keyBy('game_id');
+
+        // Fetch user's community posts (experiences and questions)
+        $myPosts = \App\Models\Experience::with('game')
+            ->where('user_id', $user->id)
+            ->where('approved', true)
+            ->where('type', 'experience')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $myQuestions = \App\Models\Experience::with('game')
+            ->where('user_id', $user->id)
+            ->where('approved', true)
+            ->where('type', 'question')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('my_space', compact('games', 'allGames', 'userReviews', 'myPosts', 'myQuestions'));
+>>>>>>> Stashed changes
     }
 
     public function deleteGame($id)
@@ -58,6 +89,9 @@ class DashboardController extends Controller
         );
 
         return redirect()->route('my_space')->with('success', 'Your review has been submitted.');
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
     }
 }

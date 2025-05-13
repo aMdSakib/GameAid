@@ -1,5 +1,9 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 <x-app-layout>
+=======
+a<x-app-layout>
+>>>>>>> Stashed changes
 =======
 a<x-app-layout>
 >>>>>>> Stashed changes
@@ -16,7 +20,11 @@ a<x-app-layout>
                 <li class="flex items-center space-x-4 p-4 bg-gray-800 rounded-md hover:bg-gray-700 transition">
                     <a href="{{ route('games.show', $game->id) }}">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <img src="{{ $game->image_path ? asset('Images/' . $game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-24 h-24 object-cover rounded-md">
+=======
+<img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-24 h-24 object-cover rounded-md">
+>>>>>>> Stashed changes
 =======
 <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-24 h-24 object-cover rounded-md">
 >>>>>>> Stashed changes
@@ -26,7 +34,10 @@ a<x-app-layout>
                             {{ $game->name }}
                         </a>
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+>>>>>>> Stashed changes
                         @php
                             $avgRating = $averageRatings[$game->id] ?? null;
                         @endphp
@@ -44,6 +55,9 @@ a<x-app-layout>
                         @else
                             <div class="text-gray-400">No reviews yet</div>
                         @endif
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
                     </div>
                 </li>

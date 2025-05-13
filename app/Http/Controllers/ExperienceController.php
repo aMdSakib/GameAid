@@ -7,6 +7,11 @@ use App\Models\Experience;
 use App\Models\Game;
 use Illuminate\Support\Facades\Auth;
 
+<<<<<<< Updated upstream
+=======
+use App\Models\Report;
+
+>>>>>>> Stashed changes
 class ExperienceController extends Controller
 {
     public function index()
@@ -18,6 +23,52 @@ class ExperienceController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
+<<<<<<< Updated upstream
+=======
+        // Fetch all approved progress posts with related user, game, and answers with users
+        $progresses = Experience::with(['user', 'game', 'answers.user'])
+            ->where('approved', true)
+            ->where('type', 'progress')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // Calculate mission completion percentages for each progress post
+        $completionPercentages = [];
+
+        // Collect unique user-game pairs from progress posts
+        $userGamePairs = $progresses->map(function ($progress) {
+            return ['user_id' => $progress->user_id, 'game_id' => $progress->game_id];
+        })->unique();
+
+        foreach ($userGamePairs as $pair) {
+            $userId = $pair['user_id'];
+            $gameId = $pair['game_id'];
+
+            // Get missions for the game
+            $missions = \App\Models\Mission::where('game_id', $gameId)->get();
+            $missionIds = $missions->pluck('id');
+
+            // Count completed missions for the user
+            $completedCount = \App\Models\UserMissionProgress::where('user_id', $userId)
+                ->whereIn('mission_id', $missionIds)
+                ->where('completed', true)
+                ->count();
+
+            $totalMissions = $missions->count();
+            $completionPercentage = $totalMissions > 0 ? round(($completedCount / $totalMissions) * 100) : 0;
+
+            // Store completion percentage keyed by user_id and game_id
+            $completionPercentages[$userId . '_' . $gameId] = $completionPercentage;
+        }
+
+        // Map completion percentages to each progress post by experience id
+        $progressCompletionMap = [];
+        foreach ($progresses as $progress) {
+            $key = $progress->user_id . '_' . $progress->game_id;
+            $progressCompletionMap[$progress->id] = $completionPercentages[$key] ?? 0;
+        }
+
+>>>>>>> Stashed changes
         // Fetch all approved questions with related user, game, and answers with users
         $questions = Experience::with(['user', 'game', 'answers.user'])
             ->where('approved', true)
@@ -27,7 +78,32 @@ class ExperienceController extends Controller
 
         $games = \App\Models\Game::all();
 
+<<<<<<< Updated upstream
         return view('community.index', compact('experiences', 'questions', 'games'));
+=======
+        return view('community.index', compact('experiences', 'progresses', 'questions', 'games', 'progressCompletionMap'));
+    }
+
+    public function showReportForm($experienceId)
+    {
+        $experience = Experience::findOrFail($experienceId);
+        return view('community.report', compact('experience'));
+    }
+
+    public function submitReport(Request $request, $experienceId)
+    {
+        $request->validate([
+            'report_text' => 'required|string|max:1000',
+        ]);
+
+        $report = new Report();
+        $report->experience_id = $experienceId;
+        $report->user_id = auth()->id();
+        $report->report_text = $request->report_text;
+        $report->save();
+
+        return redirect()->route('community.index')->with('success', 'Report submitted successfully.');
+>>>>>>> Stashed changes
     }
 
     public function create(Request $request)
@@ -49,12 +125,20 @@ class ExperienceController extends Controller
         $post->game_id = $request->game_id;
         $post->content = $request->content;
         $post->type = $request->type;
+<<<<<<< Updated upstream
         $post->approved = false;
+=======
+        $post->approved = true;
+>>>>>>> Stashed changes
         $post->likes = 0;
         $post->dislikes = 0;
         $post->save();
 
+<<<<<<< Updated upstream
         return redirect()->route('community.index')->with('success', 'Your post has been submitted for approval.');
+=======
+        return redirect()->route('community.index')->with('success', 'Your post has been posted successfully.');
+>>>>>>> Stashed changes
     }
 
     public function storeAnswer(Request $request, $experienceId)

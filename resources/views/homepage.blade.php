@@ -21,6 +21,27 @@
     <div class="py-12 bg-gray-900 text-white min-h-screen"> <!-- Updated here -->
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8">
 
+            @if(session('show_premium_popup'))
+            <div id="premium-popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                <div class="bg-white rounded-lg p-6 max-w-md w-full text-center">
+                    <h3 class="text-xl font-semibold mb-4 text-black">Upgrade to Premium</h3>
+                    <p class="mb-6 text-black">Access to My Space is restricted to premium users. Would you like to upgrade?</p>
+                    <div class="flex justify-center space-x-4">
+                        <button id="stay-basic" class="bg-gray-400 hover:bg-gray-500 text-white font-semibold py-2 px-4 rounded">Stay Basic</button>
+                        <button id="go-premium" class="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded">Go Premium</button>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.getElementById('stay-basic').addEventListener('click', function() {
+                    window.location.href = "{{ url('/') }}";
+                });
+                document.getElementById('go-premium').addEventListener('click', function() {
+                    window.location.href = "http://127.0.0.1:8000/choose_plan";
+                });
+            </script>
+            @endif
+
             <form method="GET" action="{{ route('home') }}" class="mb-6">
                 <input
                     type="text"
@@ -40,7 +61,11 @@
                 <div class="game-card flex flex-col items-center">
                     <a href="{{ route('games.show', $game->id) }}">
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
                         <img src="{{ $game->image_path ? asset('Images/' . $game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
+=======
+                        <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
+>>>>>>> Stashed changes
 =======
                         <img src="{{ $game->image_path && preg_match('/^https?:\/\//', $game->image_path) ? $game->image_path : ($game->image_path ? asset('Images/' . str_replace(' ', '%20', $game->image_path)) : asset('Images/no-image-available.png')) }}" alt="{{ $game->name }}" class="w-48 aspect-[4/3] object-cover rounded-md game-image">
 >>>>>>> Stashed changes
@@ -62,6 +87,12 @@
                     </div>
                 </div>
                 @endforeach
+            </div>
+
+            <div class="mb-6">
+                <a href="{{ route('choose_plan') }}" class="inline-block bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-3 px-6 rounded-lg transition-colors duration-300">
+                    Go Premium
+                </a>
             </div>
 
             <!-- New News Section -->

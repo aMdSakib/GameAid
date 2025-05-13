@@ -17,13 +17,19 @@ class HomeController extends Controller
             $games = Game::where('name', 'like', '%' . $search . '%')->get();
         } else {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             $games = Game::orderBy('created_at', 'desc')->take(3)->get();
 =======
+=======
+>>>>>>> Stashed changes
             // Fetch 4 latest games with average review stars
             $games = Game::withAvg('userGameReviews', 'rating')
                 ->orderBy('created_at', 'desc')
                 ->take(4)
                 ->get();
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
         }
 
