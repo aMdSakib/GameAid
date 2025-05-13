@@ -13,5 +13,23 @@ class Game extends Model
         'name',
         'image_path',
         'user_id',
+        'description',
+        'characters',
+        'game_details',
     ];
+
+    public function missions()
+    {
+        return $this->hasMany(Mission::class);
+    }
+
+    public function userGameReviews()
+    {
+        return $this->hasMany(UserGameReview::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'user_game');
+    }
 }

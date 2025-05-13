@@ -7,8 +7,6 @@
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('home') }}">
                         <img src="{{ asset('Images/logo.png') }}" alt="Logo" class="h-9 w-auto">
-
-
                     </a>
                 </div>
 
@@ -18,14 +16,36 @@
                     <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                         {{ __('Admin Dashboard') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
+                        {{ __('Games') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('community.index')" :active="request()->routeIs('community.index')">
+                        {{ __('Community') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('my_space')" :active="request()->routeIs('my_space')">
+                        {{ __('My Space') }}
+                    </x-nav-link>
                     @elseif (Auth::check())
                     <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('games.index')" :active="request()->routeIs('games.index')">
+                        {{ __('Games') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('community.index')" :active="request()->routeIs('community.index')">
+                        {{ __('Community') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('my_space')" :active="request()->routeIs('my_space')">
+                        {{ __('My Space') }}
                     </x-nav-link>
                     @endif
+                    <!-- Removed Community link near Admin Dashboard as per request -->
+                    <!-- <x-nav-link :href="route('community.index')" :active="request()->routeIs('community.index')">
+                        {{ __('Community') }}
+                    </x-nav-link> -->
                 </div>
             </div>
 
@@ -60,9 +80,9 @@
         </x-dropdown>
     </div>
 @else
-    <div class="hidden sm:flex sm:items-center sm:ml-6">
+    <div class="hidden sm:flex sm:items-center sm:ml-6 space-x-4">
         <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
-            {{ __('Log In') }}
+            {{ __('Sign In') }}
         </x-nav-link>
         <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
             {{ __('Register') }}
@@ -88,8 +108,8 @@
             <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
                 {{ __('Home') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            <x-responsive-nav-link href="/my_space" :active="request()->routeIs('my_space')">
+                {{ __('My Space') }}
             </x-responsive-nav-link>
         </div>
 

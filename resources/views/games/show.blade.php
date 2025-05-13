@@ -8,7 +8,7 @@
     <div class="py-12 bg-gray-900 text-white min-h-screen">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-gray-800 rounded-lg p-6">
-                <img src="{{ $game->image_path ? asset($game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-96 h-96 object-cover rounded-md mb-4" />
+                <img src="{{ $game->image_path ? asset('Images/' . $game->image_path) : asset('Images/no-image-available.png') }}" alt="{{ $game->name }}" class="w-96 h-96 object-cover rounded-md mb-4" />
                 <h3 class="text-3xl font-bold mb-4">{{ $game->name }}</h3>
                 <p class="text-lg whitespace-pre-line">
                     {{ $game->description ?? 'No description available.' }}

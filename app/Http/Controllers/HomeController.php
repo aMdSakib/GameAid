@@ -14,11 +14,13 @@ class HomeController extends Controller
 
         // Fetch games filtered by search query if provided
         if ($search) {
-            $games = Game::where('is_system', true)
-                ->where('name', 'like', '%' . $search . '%')
-                ->get();
+            $games = Game::where('name', 'like', '%' . $search . '%')->get();
         } else {
-            $games = Game::where('is_system', true)->get();
+            // Fetch 4 latest games with average review stars
+            $games = Game::withAvg('userGameReviews', 'rating')
+                ->orderBy('created_at', 'desc')
+                ->take(4)
+                ->get();
         }
 
         // Fetch latest news, for example latest 5 news articles
